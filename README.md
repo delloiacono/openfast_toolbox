@@ -1,3 +1,5 @@
+# ! Please note: this fork contains some changes compared to the official version and is not currently synchronised
+
 # openfast_toolbox
 
 [![Build status](https://github.com/openfast/openfast_toolbox/workflows/Development%20Pipeline/badge.svg)](https://github.com/OpenFAST/openfast_toolbox/actions?query=workflow%3A%22Development+Pipeline%22)
