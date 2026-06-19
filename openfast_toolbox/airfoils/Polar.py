@@ -590,7 +590,7 @@ class Polar(object):
                 else:
                     cm_ext[i] = cm_new
         cm = np.interp(np.degrees(alpha), alpha_cm, cm_ext)
-        return type(self)(self.Re, np.degrees(alpha), cl, cd, cm)
+        return type(self)(filename=None, alpha=np.degrees(alpha), cl=cl, cd=cd, cm=cm, Re=self.Re)
 
 
 

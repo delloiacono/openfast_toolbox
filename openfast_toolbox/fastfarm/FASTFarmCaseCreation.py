@@ -772,13 +772,13 @@ class FFCaseCreation:
         
                     # Update each turbine's elastic model
                     if EDmodel_ == 'FED':
-                        self.ElastoDynFile['RotSpeed']   = self.bins.sel(wspd=Vhub_, method='nearest').RotSpeed.values
-                        self.ElastoDynFile['BlPitch(1)'] = self.bins.sel(wspd=Vhub_, method='nearest').BlPitch.values
-                        self.ElastoDynFile['BlPitch(2)'] = self.bins.sel(wspd=Vhub_, method='nearest').BlPitch.values
-                        self.ElastoDynFile['BlPitch(3)'] = self.bins.sel(wspd=Vhub_, method='nearest').BlPitch.values
+                        # self.ElastoDynFile['RotSpeed']   = self.bins.sel(wspd=Vhub_, method='nearest').RotSpeed.values
+                        # self.ElastoDynFile['BlPitch(1)'] = self.bins.sel(wspd=Vhub_, method='nearest').BlPitch.values
+                        # self.ElastoDynFile['BlPitch(2)'] = self.bins.sel(wspd=Vhub_, method='nearest').BlPitch.values
+                        # self.ElastoDynFile['BlPitch(3)'] = self.bins.sel(wspd=Vhub_, method='nearest').BlPitch.values
         
-                        self.ElastoDynFile['NacYaw']   = yaw_deg_ + yaw_mis_deg_
-                        self.ElastoDynFile['PtfmYaw']  = phi_deg_
+                        # self.ElastoDynFile['NacYaw']   = yaw_deg_ + yaw_mis_deg_
+                        # self.ElastoDynFile['PtfmYaw']  = phi_deg_
                         # The blade file entry `BldFile[1-3]` is not actually read. Sometimes we see `BldFile([1-3])`.
                         if 'BldFile1' in self.ElastoDynFile.keys():
                             self.ElastoDynFile['BldFile1'] = f'"{self.EDbladefilename}"'
@@ -789,18 +789,18 @@ class FFCaseCreation:
                             self.ElastoDynFile['BldFile(2)'] = f'"{self.EDbladefilename}"'
                             self.ElastoDynFile['BldFile(3)'] = f'"{self.EDbladefilename}"'
                         self.ElastoDynFile['TwrFile']  = f'"{self.EDtowerfilename}"'
-                        self.ElastoDynFile['Azimuth']  = round(np.random.uniform(low=0, high=360)) # start at a random value
+                        # self.ElastoDynFile['Azimuth']  = round(np.random.uniform(low=0, high=360)) # start at a random value
                         if writeFiles:
                             if t==0: shutilcopy2_untilSuccessful(self.EDbladefilepath, os.path.join(currPath,self.EDbladefilename))
                             if t==0: shutilcopy2_untilSuccessful(self.EDtowerfilepath, os.path.join(currPath,self.EDtowerfilename))
                             self.ElastoDynFile.write(os.path.join(currPath,f'{self.EDfilename}{t+1}_mod.dat'))
                     elif EDmodel_ == 'SED':
-                        self.SElastoDynFile['RotSpeed']  = self.bins.sel(wspd=Vhub_, method='nearest').RotSpeed.values
-                        self.SElastoDynFile['BlPitch']   = self.bins.sel(wspd=Vhub_, method='nearest').BlPitch.values
+                        # self.SElastoDynFile['RotSpeed']  = self.bins.sel(wspd=Vhub_, method='nearest').RotSpeed.values
+                        # self.SElastoDynFile['BlPitch']   = self.bins.sel(wspd=Vhub_, method='nearest').BlPitch.values
 
-                        self.SElastoDynFile['BlPitch']  = self.bins.sel(wspd=Vhub_, method='nearest').BlPitch.values
-                        self.SElastoDynFile['RotSpeed'] = self.bins.sel(wspd=Vhub_, method='nearest').RotSpeed.values
-                        self.SElastoDynFile['NacYaw']   = yaw_deg_ + yaw_mis_deg_
+                        # self.SElastoDynFile['BlPitch']  = self.bins.sel(wspd=Vhub_, method='nearest').BlPitch.values
+                        # self.SElastoDynFile['RotSpeed'] = self.bins.sel(wspd=Vhub_, method='nearest').RotSpeed.values
+                        # self.SElastoDynFile['NacYaw']   = yaw_deg_ + yaw_mis_deg_
                         if writeFiles:
                             self.SElastoDynFile.write(os.path.join(currPath,f'{self.SEDfilename}{t+1}_mod.dat'))
         
@@ -808,11 +808,11 @@ class FFCaseCreation:
                     if ADmodel_ == 'ADyn':
                         self.AeroDynFile['ADBlFile(1)'] = self.AeroDynFile['ADBlFile(2)'] = self.AeroDynFile['ADBlFile(3)'] = f'"{self.ADbladefilename}"'
                         self.AeroDynFile['Wake_Mod'] = 1 
-                        if 'Skew_Mod' in self.AeroDynFile.keys():
-                            self.AeroDynFile['Skew_Mod'] = 1
-                            self.AeroDynFile['SkewMomCorr'] = True
-                        self.AeroDynFile['BEM_Mod'] = 2
-                        self.AeroDynFile['IntegrationMethod'] = 4
+                        # if 'Skew_Mod' in self.AeroDynFile.keys():
+                        #     self.AeroDynFile['Skew_Mod'] = 1
+                        #     self.AeroDynFile['SkewMomCorr'] = True
+                        # self.AeroDynFile['BEM_Mod'] = 2
+                        # self.AeroDynFile['IntegrationMethod'] = 4
                         # Adjust the Airfoil path to point to the templatePath (1:-1 to remove quotes)
                         self.AeroDynFile['AFNames'] = [f'"{os.path.join(self.templatePathabs, "Airfoils", i[1:-1].split("Airfoils/", 1)[-1])}"' 
                                         for i in self.AeroDynFile['AFNames'] ]
@@ -874,7 +874,7 @@ class FFCaseCreation:
                     if self.hasMD:
                         if self.multi_MD:
                             self.turbineFile['CompMooring'] = 3  # {0=None; 1=MAP++; 2=FEAMooring; 3=MoorDyn; 4=OrcaFlex}
-                            self.turbineFile['MooringFile']  = f'"{self.MDfilename}{t+1}_mod.dat'
+                            self.turbineFile['MooringFile']  = f'"{self.MDfilename}{t+1}_mod.dat"'
                         else:
                             # Should be in .fstf and not in .fst (updated later when ff file is written).
                             pass
@@ -1599,15 +1599,25 @@ class FFCaseCreation:
             
              
         elif _isclose(self.D, 240): # IEA 15 MW
-            self.bins = xr.Dataset({'WaveHs':      (['wspd'], [1.172, 1.323, 1.523, 1.764, 2.255]),  # higher values on default input from the repository (4.52)
-                                    'WaveTp':      (['wspd'], [7.287, 6.963, 7.115, 6.959, 7.067]),  # higher values on default input from the repository (9.45)
-                                    'RotSpeed':    (['wspd'], [4.995, 6.087, 7.557, 7.557, 7.557]),
-                                    'BlPitch':     (['wspd'], [0.315, 0,     0.645, 7.6,   13.8 ]),
+            self.bins = xr.Dataset({'WaveHs':      (['wspd'], [1.5, 1.7, 1.9, 2.2, 2.6, 3.0]),  # higher values on default input from the repository (4.52)
+                                    'WaveTp':      (['wspd'], [10.7, 10.5, 10.3, 10.2, 10.2, 10.2]),  # higher values on default input from the repository (9.45)
+                                    'RotSpeed':    (['wspd'], [5, 5, 5.78, 7.1, 7.55, 7.55]),  # from IEA 15 MW ED input file
+                                    'BlPitch':     (['wspd'], [3.7, 1.5, 0, 0, 6, 14]),            # from IEA 15 MW ED input file
                                     #'WvHiCOffD':   (['wspd'], [0,     0,     0,     0,     0    ]), # 2nd order wave info. Unused for now. 3.04292 from repo; 0.862 from KS
                                     #'WvLowCOffS':  (['wspd'], [0,     0,     0,     0,     0    ]), # 2nd order wave info. Unused for now  0.314159 from repo; 0.862 from KS
-                                   },  coords={'wspd': [6.6, 8.6, 10.6, 12.6, 15]} )  # 15 m/s is 'else', since method='nearest' is used on the variable `bins`
-            
+                                   },  coords={'wspd': [4, 6, 8, 10, 12, 14]} )  # 15 m/s is 'else', since method='nearest' is used on the variable `bins`
+
+
+        elif _isclose(self.D, 280): # IEA 22 MW
+            self.bins = xr.Dataset({'WaveHs':      (['wspd'], [8]),  # higher values on default input from the repository (4.52)
+                                    'WaveTp':      (['wspd'], [12.7]),  # higher values on default input from the repository (9.45)
+                                    'RotSpeed':    (['wspd'], [3.0]),  # from IEA 15 MW ED input file
+                                    'BlPitch':     (['wspd'], [0.0]),            # from IEA 15 MW ED input file
+                                    #'WvHiCOffD':   (['wspd'], [0,     0,     0,     0,     0    ]), # 2nd order wave info. Unused for now. 3.04292 from repo; 0.862 from KS
+                                    #'WvLowCOffS':  (['wspd'], [0,     0,     0,     0,     0    ]), # 2nd order wave info. Unused for now  0.314159 from repo; 0.862 from KS
+                                   },  coords={'wspd': [13]} )  # 15 m/s is 'else', since method='nearest' is used on the variable `bins`
              
+
         elif _isclose(self.D, 130): # IEA 3.4 MW RWT
             self.bins = xr.Dataset({'WaveHs':      (['wspd'], [ 1.429, 1.429]), # 1.429 comes from Matt's hydrodyn input file
                                     'WaveTp':      (['wspd'], [ 7.073, 7.073]), # 7.073 comes from Matt's hydrodyn input file
@@ -2303,24 +2313,24 @@ class FFCaseCreation:
                             ff_file['OutRadii'] = ff_file['OutRadii'][:i]
                             break
 
-                    # Vizualization outputs
-                    ff_file['WrDisWind'] = 'False'
-                    ff_file['WrDisDT']   = ff_file['DT_Low-VTK']    # default is the same as DT_Low-VTK
-                    ff_file['NOutDisWindXY'] = len(self.planes_xy)
-                    ff_file['OutDisWindZ']   = ', '.join(map(str, self.planes_xy))
-                    ff_file['NOutDisWindYZ'] = len(self.planes_yz)
-                    ff_file['OutDisWindX']   = ', '.join(map(str, self.planes_yz))
-                    ff_file['NOutDisWindXZ'] = len(self.planes_xz)
-                    ff_file['OutDisWindY']   = ', '.join(map(str, self.planes_xz))
+                    # # Vizualization outputs
+                    # ff_file['WrDisWind'] = 'False'
+                    # ff_file['WrDisDT']   = ff_file['DT_Low-VTK']    # default is the same as DT_Low-VTK
+                    # ff_file['NOutDisWindXY'] = len(self.planes_xy)
+                    # ff_file['OutDisWindZ']   = ', '.join(map(str, self.planes_xy))
+                    # ff_file['NOutDisWindYZ'] = len(self.planes_yz)
+                    # ff_file['OutDisWindX']   = ', '.join(map(str, self.planes_yz))
+                    # ff_file['NOutDisWindXZ'] = len(self.planes_xz)
+                    # ff_file['OutDisWindY']   = ', '.join(map(str, self.planes_xz))
         
-                    # Modify wake outputs
-                    ff_file['NOutDist'] = 9
-                    ff_file['OutDist']  = ', '.join(map(str, [d*D_ for d in [0.5,1,1.5,2,3,4,5,6,7]]))
-                    # Mofidy wind output
-                    ff_file['NWindVel'] = len(xWT[:9])
-                    ff_file['WindVelX'] = ', '.join(map(str, xWT[:9]))
-                    ff_file['WindVelY'] = ', '.join(map(str, yWT[:9]))
-                    ff_file['WindVelZ'] = ', '.join(map(str, zWT[:9]+self.zhub))
+                    # # Modify wake outputs
+                    # ff_file['NOutDist'] = 9
+                    # ff_file['OutDist']  = ', '.join(map(str, [d*D_ for d in [0.5,1,1.5,2,3,4,5,6,7]]))
+                    # # Mofidy wind output
+                    # ff_file['NWindVel'] = len(xWT[:9])
+                    # ff_file['WindVelX'] = ', '.join(map(str, xWT[:9]))
+                    # ff_file['WindVelY'] = ', '.join(map(str, yWT[:9]))
+                    # ff_file['WindVelZ'] = ', '.join(map(str, zWT[:9]+self.zhub))
         
                     ff_file.write(outputFSTF)
 

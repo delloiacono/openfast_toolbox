@@ -145,7 +145,10 @@ class ROSCODISCONFile(File):
                 if type(v) is str:
                     sval='"{:15s}"    '.format(v)
                 elif hasattr(v, '__len__'):
-                    if isinstance(v[0], (np.floating, float)):
+                    # Check if array contains integers or floats
+                    if isinstance(v[0], (int, np.integer)):
+                        sval=' '.join(['{}'.format(vi) for vi in v]  )+'    '
+                    elif isinstance(v[0], (np.floating, float)):
                         sval=' '.join([fmtFloat.format(vi) for vi in v]  )+'    '
                     else:
                         sval=' '.join(['{}'.format(vi) for vi in v]  )+'    '
@@ -234,7 +237,18 @@ def read_DISCON(DISCON_filename, DISCON_in = None):
                 sps = line.split()
                 array_length = sps.index('!')
                 param = sps[array_length+1]
-                values = np.array( [float(x) for x in sps[:array_length]] )
+                # Try to preserve integers when possible
+                parsed_values = []
+                for x in sps[:array_length]:
+                    try:
+                        # Check if it's an integer (no decimal point or scientific notation)
+                        if '.' not in x and 'e' not in x.lower():
+                            parsed_values.append(int(x))
+                        else:
+                            parsed_values.append(float(x))
+                    except ValueError:
+                        parsed_values.append(float(x))
+                values = np.array(parsed_values)
             else:                           # All other entries
                 param = line.split()[2]
                 value = line.split()[0]
